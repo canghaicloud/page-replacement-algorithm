@@ -5,6 +5,8 @@
 #include "lru.h"
 #include "opt.h"
 
+#pragma execution_character_set("utf-8")
+
 //创建并初始化窗口
 Widget::Widget(QWidget *parent)
     : QWidget(parent)
@@ -20,9 +22,34 @@ Widget::~Widget()
 
 void Widget::on_pushButton_clicked()
 {
-    int size_random = ui->lineEdit->text().toInt();
-    int page_size = ui->lineEdit_2->text().toInt();
-    int memory_size = ui->lineEdit_3->text().toInt();
+    bool sign_1, sign_2, sign_3;
+    int size_random = ui->lineEdit->text().toInt(&sign_1);
+    int page_size = ui->lineEdit_2->text().toInt(&sign_2);
+    int memory_size = ui->lineEdit_3->text().toInt(&sign_3);
+
+    if(sign_1 && sign_2 && sign_3){
+        if (size_random <= 0 || size_random > 100) {
+            QMessageBox::warning(this, "输入错误", "访问序列的范围为0~100");
+            return;
+        }
+        if (page_size <= 1 || page_size > 50) {
+            QMessageBox::warning(this, "输入错误", "页表长度的范围为2~50");
+            return;
+        }
+        if(memory_size == 0 || memory_size > 25){
+            QMessageBox::warning(this, "输入错误", "内存大小范围为1~25");
+            return;
+        }
+        if(size_random < 2*page_size || page_size < 2*memory_size){
+            QMessageBox::warning(this, "输入错误", "数据条件：sequence_length >= 2*page_table_length && page_table_length >= 2*memory_size");
+            return;
+        }
+    } else {
+        //转换失败
+        QMessageBox::warning(this, "输入错误", "请输入有效整数");
+        return;
+    }
+
     int* randomArray;
     randomArray = (int*)malloc(sizeof(int) * size_random);
     for (int k = 0; k < size_random; k++) {
