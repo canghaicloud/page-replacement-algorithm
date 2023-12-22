@@ -5,6 +5,7 @@
 #include "lru.h"
 #include "opt.h"
 
+//创建并初始化窗口
 Widget::Widget(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::Widget)

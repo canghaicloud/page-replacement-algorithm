@@ -9,7 +9,7 @@
 #include<sstream>
 using namespace std;
 struct page {
-    int pagenumber;
+    //int pagenumber;
     int memorynumber;
     int IsInmemory;
 };
@@ -27,13 +27,15 @@ string FIFO(int page_size, int requestsize, int memorysize, int* random)
     for (i = 0; i < page_size; i++) {
         PageTable[i].IsInmemory = 0;
         PageTable[i].memorynumber = -1;
-        PageTable[i].pagenumber = i;
+        //PageTable[i].pagenumber = i;
     }
     int PageFalseTime = 0;
-    int FirstIn = 0;
+    int FirstIn = 0;//第一个空闲位置索引
     int FullNumber = 0;
     int index = 0;
     stringstream ss;
+
+    //处理页面未满时的请求
     while (FullNumber != memorysize)
     {
         if (PageTable[random[index]].IsInmemory == 0) {
@@ -50,6 +52,8 @@ string FIFO(int page_size, int requestsize, int memorysize, int* random)
             index++;
         }
     }
+
+    //处理页面已满时的请求
     int next_index = index;
     for (index = next_index; index < requestsize; index++)
     {

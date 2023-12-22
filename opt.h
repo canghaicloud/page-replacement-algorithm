@@ -21,7 +21,7 @@ int findOptimalPage(int* reference_string, int reference_length, MEMORY* b, int 
     int farthest_occurrence = INT_MIN;
     int replace_index = -1;
 
-    for (int i = 0; i < memory_size; ++i) {
+    for (int i = 0; i < memory_size; ++i) {//遍历内存页面
         int page = b[i].pagenumber;
         int next_occurrence = INT_MAX;
 
@@ -38,7 +38,7 @@ int findOptimalPage(int* reference_string, int reference_length, MEMORY* b, int 
         }
     }
 
-    return replace_index;
+    return replace_index;//返回最远页面索引
 }
 
 string opt(int memorysize, int reference_size, int* reference_string) {
