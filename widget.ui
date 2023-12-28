@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>651</width>
-    <height>560</height>
+    <height>587</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -256,6 +256,32 @@ li.checked::marker { content: &quot;\2612&quot;; }
    </property>
    <property name="text">
     <string>OPT</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_6">
+   <property name="geometry">
+    <rect>
+     <x>360</x>
+     <y>550</y>
+     <width>80</width>
+     <height>18</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>退出</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_7">
+   <property name="geometry">
+    <rect>
+     <x>210</x>
+     <y>550</y>
+     <width>80</width>
+     <height>18</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>更多算法</string>
    </property>
   </widget>
  </widget>

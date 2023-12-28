@@ -4,6 +4,9 @@
 #include "fifo.h"
 #include "lru.h"
 #include "opt.h"
+#include "lfu.h"
+#include "clock.h"
+#include "more.h"
 
 #pragma execution_character_set("utf-8")
 
@@ -101,6 +104,8 @@ void Widget::on_pushButton_clicked()
     QString fifo_result = QString(QString::fromLocal8Bit(FIFO(page_size, size_random, memory_size, randomArray).c_str()));
     QString lru_result = QString(QString::fromLocal8Bit(lru(memory_size, size_random, randomArray).c_str()));
     QString opt_result = QString(QString::fromLocal8Bit(opt(memory_size, size_random, randomArray).c_str()));
+    QString clock_result = QString(QString::fromLocal8Bit(clock(memory_size, size_random, randomArray).c_str()));
+
 
     ui->textEdit->setText(fifo_result);
     ui->textEdit_2->setText(lru_result);
@@ -389,5 +394,71 @@ void Widget::on_pushButton_5_clicked()
     ui->textEdit_3->setText(opt_result);
 
     free(randomArray);
+}
+
+
+void Widget::on_pushButton_6_clicked()
+{
+    close();
+}
+
+
+void Widget::on_pushButton_7_clicked()
+{
+    int size_random = ui->lineEdit->text().toInt();
+    int page_size = ui->lineEdit_2->text().toInt();
+    int memory_size = ui->lineEdit_3->text().toInt();
+    int* randomArray;
+
+    randomArray = (int*)malloc(sizeof(int) * size_random);
+    QString inputText = ui->textEdit_4->toPlainText().trimmed();// 获取用户在 textEdit_4 中输入的文本
+    if (inputText.isEmpty()) {
+        for (int k = 0; k < size_random; k++) {
+            int temp = rand() % page_size;
+            randomArray[k] = temp;
+        }
+
+        QStringList stringList;
+        for (int i = 0; i < size_random; ++i) {
+            stringList << QString::number(randomArray[i]);
+        }
+        QString str = stringList.join(", ");
+
+        ui->textEdit_4->setText(str);
+    } else {
+        // 使用正则表达式检查输入是否为合法的数组（数字之间用逗号分隔）
+        QRegExp regex("^[0-9]+(, [0-9]+)*$");
+        if (!regex.exactMatch(inputText)) {
+            // 如果不是合法的数组，弹出错误提示窗口
+            QMessageBox::critical(this, "错误", "输入序列不合法");
+            free(randomArray);
+            return;
+        }
+
+        // 将输入的数组字符串分割成数字并添加到 QVector 中
+        QStringList numbers = inputText.split(",");
+        QVector<int> tempArray;
+        for (const QString& number : numbers) {
+            tempArray.append(number.toInt());
+        }
+
+        // 检测数组的长度和最大元素是否符合条件
+        if (tempArray.size() != size_random || *std::max_element(tempArray.begin(), tempArray.end()) > (page_size - 1)) {
+            // 如果不满足条件，弹出错误提示窗口
+            QMessageBox::critical(this, "错误", "输入序列与输入信息不匹配");
+            free(randomArray);
+            return;
+        } else {
+            // 如果满足条件，将临时数组的数据复制到 randomArray 中
+            free(randomArray);  // 删除原有的内存
+            randomArray = (int*)malloc(sizeof(int) * size_random);
+            copy(tempArray.begin(), tempArray.end(), randomArray);
+        }
+    }
+
+    QString lfu_result = QString(QString::fromLocal8Bit(lfu(memory_size, size_random, randomArray).c_str()));
+    QString clock_result = QString(QString::fromLocal8Bit(clock(memory_size, size_random, randomArray).c_str()));
+    more *m = new more(nullptr, lfu_result, clock_result);
+    m->show();
 }
 

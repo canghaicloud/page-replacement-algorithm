@@ -70,7 +70,7 @@ string lru(int memorysize, int random_size, int* random) {
         }
     }
     ss << "缺页次数为:" << page_fault_time << endl;
-    ss << "缺页率为：:" << (double)page_fault_time / random_size * 100 << "%" << endl;
+    ss << "缺页率为:" << (double)page_fault_time / random_size * 100 << "%" << endl;
     free(MEMORYATable);
     return ss.str();
 }

@@ -10,15 +10,20 @@ CONFIG += c++17
 
 SOURCES += \
     main.cpp \
+    more.cpp \
     widget.cpp
 
 HEADERS += \
+    clock.h \
     fifo.h \
+    lfu.h \
     lru.h \
+    more.h \
     opt.h \
     widget.h
 
 FORMS += \
+    more.ui \
     widget.ui
 
 # Default rules for deployment.
